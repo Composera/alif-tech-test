@@ -7,5 +7,10 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    //
+    public function createCupboard(Request $request)
+    {
+        return response()->json([
+            'all' => $request->all()
+        ]);
+    }
 }
