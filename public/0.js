@@ -39,10 +39,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MainPage',
-  mounted: function mounted() {},
+  mounted: function mounted() {// this.$toasted.show('hello billo', {
+    //     action : {
+    //         text : 'Закрыть',
+    //         onClick : (e, toastObject) => {
+    //             toastObject.goAway(0);
+    //         }
+    //     },
+    // })
+  },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['categories/mainCategoriesList']))
 });
 
@@ -80,7 +89,9 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-12 d-flex justify-content-between" }, [
-        _c("h1", [_vm._v("Шкафы")])
+        _c("h1", [_vm._v("Шкафы")]),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn" }, [_vm._v("Обновить")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-4" }, [

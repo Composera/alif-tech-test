@@ -11,7 +11,14 @@ export default {
 
     },
     actions: {
-        setCategories(ctx, val){
+        async setCategories(ctx){
+            let categories
+            await axios.get('/api/get/main/categories')
+                       .then((res) => {
+
+                       }).catch((res) => {
+
+                       })
             ctx.commit('updateCategories', val)
         }
 
