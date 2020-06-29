@@ -36,6 +36,8 @@ export default {
     }),
     methods: {
         checkForm: function (e) {
+            this.errors = [];
+            
             if (this.title) {
                 let formData = new FormData;
                 formData.append('title', this.title)
@@ -50,8 +52,6 @@ export default {
 
                 return true;
             }
-
-            this.errors = [];
 
             if (!this.title) {
                 this.errors.push('Требуется указать название.');

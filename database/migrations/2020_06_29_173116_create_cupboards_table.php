@@ -15,6 +15,8 @@ class CreateCupboardsTable extends Migration
     {
         Schema::create('cupboards', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('slug')->nullable();
             $table->timestamps();
         });
     }

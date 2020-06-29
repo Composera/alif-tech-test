@@ -48,6 +48,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checkForm: function checkForm(e) {
+      this.errors = [];
+
       if (this.title) {
         var formData = new FormData();
         formData.append('title', this.title);
@@ -59,8 +61,6 @@ __webpack_require__.r(__webpack_exports__);
         e.preventDefault();
         return true;
       }
-
-      this.errors = [];
 
       if (!this.title) {
         this.errors.push('Требуется указать название.');

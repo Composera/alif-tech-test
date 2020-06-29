@@ -38527,7 +38527,7 @@ var render = function() {
     { staticClass: "container" },
     [
       _c("div", { staticClass: "row mt-3 mb-3" }, [
-        _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "col-md-12 col-lg-6" }, [
           _c("div", { staticClass: "d-md-flex d-lg-flex d-sm-none" }, [
             _c(
               "div",
@@ -38596,7 +38596,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6" }, [
+    return _c("div", { staticClass: "col-md-12 col-lg-6" }, [
       _c("div", { staticClass: "form-group row" }, [
         _c("div", { staticClass: "col-md-10" }, [
           _c("input", {

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row mt-3 mb-3">
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-6">
                 <div class="d-md-flex d-lg-flex d-sm-none">
                     <div class="form-group mr-1">
                         <router-link :to="{ name: 'create_cupboard' }" class="btn btn-primary">Поставить шкаф</router-link>
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-6">
                 <div class="form-group row">
                     <div class="col-md-10">
                         <input 
