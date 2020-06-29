@@ -38525,7 +38525,39 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "container" },
-    [_vm._m(0), _vm._v(" "), _vm._t("default")],
+    [
+      _c("div", { staticClass: "row mt-3 mb-3" }, [
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "d-md-flex d-lg-flex d-sm-none" }, [
+            _c(
+              "div",
+              { staticClass: "form-group mr-1" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { to: { name: "create_cupboard" } }
+                  },
+                  [_vm._v("Поставить шкаф")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1),
+            _vm._v(" "),
+            _vm._m(2)
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(3)
+      ]),
+      _vm._v(" "),
+      _vm._t("default")
+    ],
     2
   )
 }
@@ -38534,53 +38566,53 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mt-3 mb-3" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "d-md-flex d-lg-flex d-sm-none" }, [
-          _c("div", { staticClass: "form-group mr-1" }, [
-            _c("button", { staticClass: "btn btn-primary" }, [
-              _vm._v("Поставить шкаф")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group mr-1" }, [
-            _c("button", { staticClass: "btn btn-primary" }, [
-              _vm._v("Создать ячейку")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group mr-1" }, [
-            _c("button", { staticClass: "btn btn-primary" }, [
-              _vm._v("Создать папку")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group mr-1" }, [
-            _c("button", { staticClass: "btn btn-primary" }, [
-              _vm._v("Добавить файл")
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "form-group row" }, [
-          _c("div", { staticClass: "col-md-10" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "search",
-                id: "search",
-                placeholder: "Поиск по папкам и файлам",
-                autocomplete: "off"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-2" }, [
-            _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Поиск")])
-          ])
+    return _c("div", { staticClass: "form-group mr-1" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [
+        _vm._v("Создать ячейку")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group mr-1" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [
+        _vm._v("Создать папку")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group mr-1" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [
+        _vm._v("Добавить файл")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "form-group row" }, [
+        _c("div", { staticClass: "col-md-10" }, [
+          _c("input", {
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              name: "search",
+              id: "search",
+              placeholder: "Поиск по папкам и файлам",
+              autocomplete: "off"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-2" }, [
+          _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Поиск")])
         ])
       ])
     ])
@@ -55204,6 +55236,14 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"./crud/create_cupboard": [
+		"./resources/js/pages/crud/create_cupboard.vue",
+		0
+	],
+	"./crud/create_cupboard.vue": [
+		"./resources/js/pages/crud/create_cupboard.vue",
+		0
+	],
 	"./errors/404": [
 		"./resources/js/pages/errors/404.vue",
 		1
@@ -55214,11 +55254,11 @@ var map = {
 	],
 	"./main": [
 		"./resources/js/pages/main.vue",
-		0
+		2
 	],
 	"./main.vue": [
 		"./resources/js/pages/main.vue",
-		0
+		2
 	]
 };
 function webpackAsyncContext(req) {
@@ -55338,6 +55378,10 @@ function page(path) {
   meta: {
     layout: 'default'
   }
+}, {
+  path: '/create-cupboard',
+  name: 'create_cupboard',
+  component: page('crud/create_cupboard.vue')
 }, {
   path: '*',
   component: page('errors/404.vue')

@@ -4,7 +4,7 @@
             <div class="col-md-6">
                 <div class="d-md-flex d-lg-flex d-sm-none">
                     <div class="form-group mr-1">
-                        <button class="btn btn-primary">Поставить шкаф</button>
+                        <router-link :to="{ name: 'create_cupboard' }" class="btn btn-primary">Поставить шкаф</router-link>
                     </div>
                     <div class="form-group mr-1">
                         <button class="btn btn-primary">Создать ячейку</button>
