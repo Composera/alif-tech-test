@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/create/cupboard', 'Api\CupboardController@createCupboard');
 Route::get('/get/cupboards', 'Api\CupboardController@all');
 Route::post('/delete/cupboard/{id}', 'Api\CupboardController@destroy');
+Route::get('/get/cupboards', 'Api\CupboardController@all');

@@ -56015,6 +56015,14 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"./cells/create_cell": [
+		"./resources/js/pages/cells/create_cell.vue",
+		0
+	],
+	"./cells/create_cell.vue": [
+		"./resources/js/pages/cells/create_cell.vue",
+		0
+	],
 	"./cupboards/create_cupboard": [
 		"./resources/js/pages/cupboards/create_cupboard.vue",
 		3
