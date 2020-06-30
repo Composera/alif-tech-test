@@ -9,13 +9,14 @@
         </div>
         <div class="col-md-12 d-flex justify-content-between">
             <h1>Шкафы</h1>
-            <button class="btn">Обновить</button>
+            <button :disabled="cupboardLoading" @click="setCupboards" class="btn">Обновить</button>
         </div>
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
+        <div class="col-md-4 mb-3" v-for="(cupboard, index) in cupboards" :key="cupboard.title + index">
+            <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Название</h5>
-                    <a href="#" class="btn btn-primary">Подробнее</a>
+                    <h5 class="card-title">{{ cupboard.title }}</h5>
+                    <router-link :to="{name: 'cupbord', params: {slug: cupboard.slug}}" class="btn btn-primary">Подробнее</router-link>
+                    <button :disabled="cupboardLoading" @click="deleteCupboard(cupboard.id)" class="btn btn-danger">Удалить</button>
                 </div>
             </div>
         </div>
@@ -23,24 +24,24 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name: 'MainPage',
     mounted(){
-        // this.$toasted.show('hello billo', {
-        //     action : {
-        //         text : 'Закрыть',
-        //         onClick : (e, toastObject) => {
-        //             toastObject.goAway(0);
-        //         }
-        //     },
-        // })
+        this.setCupboards()
     },
     computed: {
-        ...mapGetters([
-            'categories/mainCategoriesList'
-        ])
+        ...mapGetters({
+            cupboards: 'cupboards/mainCupboards',
+            cupboardLoading: 'cupboards/cupboardLoading'
+        })
+    },
+    methods: {
+        ...mapActions({
+            setCupboards: 'cupboards/setCupboards',
+            deleteCupboard: 'cupboards/deleteCupboard'
+        })
     }
 }
 </script>

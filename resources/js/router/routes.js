@@ -14,7 +14,12 @@ function page (path) {
     {
       path: '/create-cupboard',
       name: 'create_cupboard',
-      component: page('crud/create_cupboard.vue')
+      component: page('cupboards/create_cupboard.vue')
+    },
+    {
+      path: '/cupboard/:slug',
+      name: 'cupbord',
+      component: page('cupboards/cupboard_cells.vue')
     },
 
     { path: '*', component: page('errors/404.vue') }

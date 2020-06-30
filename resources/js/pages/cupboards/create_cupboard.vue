@@ -11,7 +11,14 @@
         <div class="col-md-12">
             <card title="Создание шкафа">
                 <ul class="list-group mb-3">
-                    <li class="list-group-item list-group-item-danger" v-for="(error, index) in errors" :key="error + index">{{ error }}</li>
+                    <li
+                        class="list-group-item list-group-item-danger"
+                        v-for="(error, index) in errors"
+                        :key="error + index"
+                    >
+                        <div v-if="Array.isArray(error)">{{ error[0] }}</div>
+                        <div v-else>{{ error }}</div>
+                    </li>
                 </ul>
                 <form @submit="checkForm">
                     <div class="form-group">
@@ -19,7 +26,7 @@
                         <input type="text" class="form-control" v-model="title">
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary">Создать</button>
+                        <button :disabled="loading" class="btn btn-primary">Создать</button>
                     </div>
                 </form>
             </card>
@@ -32,21 +39,41 @@ export default {
     name: 'CreateCupboard',
     data: () => ({
         title: null,
-        errors: []
+        errors: [],
+        loading: false
     }),
     methods: {
         checkForm: function (e) {
             this.errors = [];
-            
+
             if (this.title) {
                 let formData = new FormData;
                 formData.append('title', this.title)
 
+                this.loading = true
+
                 axios.post('/api/create/cupboard', formData)
                     .then((res) => {
-                        console.log(res)
+                        this.$toasted.show('Успешно создано!', {
+                            action : {
+                                text : 'Закрыть',
+                                onClick : (e, toastObject) => {
+                                    toastObject.goAway(0);
+                                }
+                            },
+                        })
+
+                        this.$router.push({name:'main'})
+
+                        // console.log(res)
                     }).catch((res) => {
-                        console.log(res)
+                        if(res.response.data.errors !== undefined){
+                            this.errors = res.response.data.errors
+                        }
+
+                        console.log(res.response)
+                    }).then(() => {
+                        this.loading = false
                     })
                 e.preventDefault();
 

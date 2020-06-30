@@ -18,4 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/create/cupboard', 'Api\CategoryController@createCupboard');
+Route::post('/create/cupboard', 'Api\CupboardController@createCupboard');
+Route::get('/get/cupboards', 'Api\CupboardController@all');
+Route::post('/delete/cupboard/{id}', 'Api\CupboardController@destroy');

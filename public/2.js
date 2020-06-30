@@ -40,19 +40,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MainPage',
-  mounted: function mounted() {// this.$toasted.show('hello billo', {
-    //     action : {
-    //         text : 'Закрыть',
-    //         onClick : (e, toastObject) => {
-    //             toastObject.goAway(0);
-    //         }
-    //     },
-    // })
+  mounted: function mounted() {
+    this.setCupboards();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['categories/mainCategoriesList']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    cupboards: 'cupboards/mainCupboards',
+    cupboardLoading: 'cupboards/cupboardLoading'
+  })),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    setCupboards: 'cupboards/setCupboards',
+    deleteCupboard: 'cupboards/deleteCupboard'
+  }))
 });
 
 /***/ }),
@@ -72,37 +74,84 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12 d-flex justify-content-between" }, [
+        _c("h1", [_vm._v("Шкафы")]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn",
+            attrs: { disabled: _vm.cupboardLoading },
+            on: { click: _vm.setCupboards }
+          },
+          [_vm._v("Обновить")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.cupboards, function(cupboard, index) {
+        return _c(
+          "div",
+          { key: cupboard.title + index, staticClass: "col-md-4 mb-3" },
+          [
+            _c("div", { staticClass: "card" }, [
+              _c(
+                "div",
+                { staticClass: "card-body" },
+                [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(cupboard.title))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        to: { name: "cupbord", params: { slug: cupboard.slug } }
+                      }
+                    },
+                    [_vm._v("Подробнее")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { disabled: _vm.cupboardLoading },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteCupboard(cupboard.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Удалить")]
+                  )
+                ],
+                1
+              )
+            ])
+          ]
+        )
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("nav", { attrs: { "aria-label": "breadcrumb" } }, [
-          _c("ol", { staticClass: "breadcrumb" }, [
-            _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Главная")])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-12 d-flex justify-content-between" }, [
-        _c("h1", [_vm._v("Шкафы")]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn" }, [_vm._v("Обновить")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        _c("div", { staticClass: "card", staticStyle: { width: "18rem" } }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("h5", { staticClass: "card-title" }, [_vm._v("Название")]),
-            _vm._v(" "),
-            _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
-              _vm._v("Подробнее")
-            ])
-          ])
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("nav", { attrs: { "aria-label": "breadcrumb" } }, [
+        _c("ol", { staticClass: "breadcrumb" }, [
+          _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Главная")])
         ])
       ])
     ])

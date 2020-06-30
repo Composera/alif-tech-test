@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 
-class Cupboard extends Model
+class Cell extends Model
 {
     use Sluggable;
-
+    
     protected $fillable = [
-        'title'
+        'title', 'cupboard_id'
     ];
 
     /**
