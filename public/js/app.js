@@ -39265,15 +39265,43 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "div",
+              { staticClass: "form-group mr-1" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { to: { name: "create_cell" } }
+                  },
+                  [_vm._v("Создать ячейку")]
+                )
+              ],
+              1
+            ),
             _vm._v(" "),
-            _vm._m(1),
+            _c(
+              "div",
+              { staticClass: "form-group mr-1" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { to: { name: "create_folder" } }
+                  },
+                  [_vm._v("Создать папку")]
+                )
+              ],
+              1
+            ),
             _vm._v(" "),
-            _vm._m(2)
+            _vm._m(0)
           ])
         ]),
         _vm._v(" "),
-        _vm._m(3)
+        _vm._m(1)
       ]),
       _vm._v(" "),
       _vm._t("default")
@@ -39282,26 +39310,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group mr-1" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _vm._v("Создать ячейку")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group mr-1" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _vm._v("Создать папку")
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -56047,6 +56055,14 @@ var map = {
 		"./resources/js/pages/errors/404.vue",
 		1
 	],
+	"./folders/create_folder": [
+		"./resources/js/pages/folders/create_folder.vue",
+		5
+	],
+	"./folders/create_folder.vue": [
+		"./resources/js/pages/folders/create_folder.vue",
+		5
+	],
 	"./main": [
 		"./resources/js/pages/main.vue",
 		2
@@ -56179,11 +56195,20 @@ function page(path) {
   component: page('cupboards/create_cupboard.vue')
 }, {
   path: '/cupboard/:slug',
-  name: 'cupbord',
+  name: 'cupboard',
   component: page('cupboards/cupboard_cells.vue')
 }, {
+  path: '/create-cell',
+  name: 'create_cell',
+  component: page('cells/create_cell.vue')
+}, {
+  path: '/create-folder',
+  name: 'create_folder',
+  component: page('folders/create_folder.vue')
+}, {
   path: '*',
-  component: page('errors/404.vue')
+  component: page('errors/404.vue'),
+  name: 'error404'
 }]);
 
 /***/ }),
@@ -56294,11 +56319,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_toasted__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-toasted */ "./node_modules/vue-toasted/dist/vue-toasted.min.js");
 /* harmony import */ var vue_toasted__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_toasted__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../router */ "./resources/js/router/index.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -56308,12 +56335,19 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
   state: function state() {
     return {
       cupboards: [],
-      loading: false
+      loading: false,
+      cupboard: []
     };
   },
   mutations: {
     updateCupboards: function updateCupboards(state, val) {
       state.cupboards = val;
+    },
+    updateLoading: function updateLoading(state, val) {
+      state.loading = val;
+    },
+    updateCupboard: function updateCupboard(state, val) {
+      state.cupboard = val;
     }
   },
   actions: {
@@ -56323,15 +56357,18 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                ctx.state.cupboardLoading = true;
+                ctx.commit('updateLoading', true);
                 _context.next = 3;
                 return axios.get('/api/get/cupboards').then(function (res) {
                   ctx.commit('updateCupboards', res.data.cupboards);
                   console.log(res);
                 })["catch"](function (res) {
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'error404'
+                  });
                   console.log(res);
                 }).then(function () {
-                  ctx.state.cupboardLoading = false;
+                  ctx.commit('updateLoading', false);
                 });
 
               case 3:
@@ -56342,19 +56379,48 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
         }, _callee);
       }))();
     },
-    deleteCupboard: function deleteCupboard(ctx, id) {
+    getCupboardCells: function getCupboardCells(ctx, slug) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                ctx.commit('updateLoading', true);
+                ctx.commit('updateCupboard', []);
+                _context2.next = 4;
+                return axios.get('/api/get/cupboard/' + slug).then(function (res) {
+                  ctx.commit('updateCupboard', res.data.cupboard);
+                  console.log(res);
+                })["catch"](function (res) {
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'error404'
+                  });
+                  console.log(res);
+                }).then(function () {
+                  ctx.commit('updateLoading', false);
+                });
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    deleteCupboard: function deleteCupboard(ctx, id) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
                 if (!confirm('Вы уверены?')) {
-                  _context2.next = 4;
+                  _context3.next = 4;
                   break;
                 }
 
-                ctx.state.cupboardLoading = true;
-                _context2.next = 4;
+                ctx.commit('updateLoading', true);
+                _context3.next = 4;
                 return axios.post('/api/delete/cupboard/' + id).then(function (res) {
                   vue__WEBPACK_IMPORTED_MODULE_1___default.a.toasted.show('Успешно удалено!', {
                     action: {
@@ -56367,17 +56433,20 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
                   ctx.commit('updateCupboards', res.data.cupboards);
                   console.log(res);
                 })["catch"](function (res) {
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'error404'
+                  });
                   console.log(res);
                 }).then(function () {
-                  ctx.state.cupboardLoading = false;
+                  ctx.commit('updateLoading', false);
                 });
 
               case 4:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2);
+        }, _callee3);
       }))();
     }
   },
@@ -56387,6 +56456,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
     },
     cupboardLoading: function cupboardLoading(state) {
       return state.loading;
+    },
+    getCupboard: function getCupboard(state) {
+      return state.cupboard;
     }
   }
 });

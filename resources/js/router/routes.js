@@ -18,10 +18,20 @@ function page (path) {
     },
     {
       path: '/cupboard/:slug',
-      name: 'cupbord',
+      name: 'cupboard',
       component: page('cupboards/cupboard_cells.vue')
     },
+    {
+      path: '/create-cell',
+      name: 'create_cell',
+      component: page('cells/create_cell.vue')
+    },
+    {
+      path: '/create-folder',
+      name: 'create_folder',
+      component: page('folders/create_folder.vue')
+    },
 
-    { path: '*', component: page('errors/404.vue') }
+    { path: '*', component: page('errors/404.vue'), name: 'error404' }
   ]
   

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use App\Models\Cell;
 
 class Cupboard extends Model
 {
@@ -25,5 +26,10 @@ class Cupboard extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function cells()
+    {
+        return $this->hasMany(Cell::class, 'cupboard_id', 'id')->orderBy('id', 'desc');
     }
 }

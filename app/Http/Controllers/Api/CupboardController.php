@@ -37,4 +37,22 @@ class CupboardController extends Controller
             'cupboards' => Cupboard::orderBy('id', 'desc')->get()
         ]);
     }
+
+    public function cupboard($slug)
+    {
+        $cupboard = Cupboard::where('slug', 'like', '%' . $slug . '%')->with('cells')->firstOrFail();
+
+        return response()->json([
+            'cupboard' => $cupboard
+        ]);
+    }
+
+    public function cupboardCells($id)
+    {
+        $cupboard = Cupboard::where('id', $id)->with('cells')->firstOrFail();
+        
+        return response()->json([
+            'cells' => $cupboard->cells
+        ]);
+    }
 }

@@ -83,6 +83,15 @@ __webpack_require__.r(__webpack_exports__);
             _this.errors = res.response.data.errors;
           }
 
+          _this.$toasted.show('Что-то пошло не так...', {
+            action: {
+              text: 'Закрыть',
+              onClick: function onClick(e, toastObject) {
+                toastObject.goAway(0);
+              }
+            }
+          });
+
           console.log(res.response);
         }).then(function () {
           _this.loading = false;

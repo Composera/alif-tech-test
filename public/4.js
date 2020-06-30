@@ -10,6 +10,13 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
 //
 //
 //
@@ -40,9 +47,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MainPage',
-  mounted: function mounted() {},
-  computed: {},
-  methods: {}
+  mounted: function mounted() {
+    this.getCupboardCells(this.$route.params.slug);
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    cupboard: 'cupboards/getCupboard',
+    cupboardLoading: 'cupboards/cupboardLoading'
+  })),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    getCupboardCells: 'cupboards/getCupboardCells'
+  }))
 });
 
 /***/ }),
@@ -62,54 +76,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-12" }, [
-      _c("nav", { attrs: { "aria-label": "breadcrumb" } }, [
-        _c("ol", { staticClass: "breadcrumb" }, [
-          _c(
-            "li",
-            { staticClass: "breadcrumb-item" },
-            [
-              _c("router-link", { attrs: { to: { name: "main" } } }, [
-                _vm._v("Главная")
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Шкаф")]),
-          _vm._v(" "),
-          _c("li", { staticClass: "breadcrumb-item" })
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-md-4 mb-3" }, [
-      _c("div", { staticClass: "card" }, [
-        _c(
-          "div",
-          { staticClass: "card-body" },
-          [
-            _c("h5", { staticClass: "card-title" }),
-            _vm._v(" "),
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("nav", { attrs: { "aria-label": "breadcrumb" } }, [
+          _c("ol", { staticClass: "breadcrumb" }, [
             _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { to: { name: "main" } }
-              },
-              [_vm._v("Подробнее")]
+              "li",
+              { staticClass: "breadcrumb-item" },
+              [
+                _c("router-link", { attrs: { to: { name: "main" } } }, [
+                  _vm._v("Главная")
+                ])
+              ],
+              1
             ),
             _vm._v(" "),
-            _c("button", { staticClass: "btn btn-danger" }, [_vm._v("Удалить")])
-          ],
-          1
-        )
-      ])
-    ])
-  ])
+            _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Шкаф")]),
+            _vm._v(" "),
+            _vm.cupboard.title !== undefined
+              ? _c("li", { staticClass: "breadcrumb-item" }, [
+                  _vm._v(_vm._s(_vm.cupboard.title))
+                ])
+              : _vm._e()
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _vm.cupboard.title !== undefined
+        ? _vm._l(_vm.cupboard.cells, function(cell, index) {
+            return _c(
+              "div",
+              { key: cell.title + index, staticClass: "col-md-4 mb-3" },
+              [
+                _c("div", { staticClass: "card" }, [
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(cell.title))
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { to: { name: "main" } }
+                        },
+                        [_vm._v("Подробнее")]
+                      ),
+                      _vm._v(" "),
+                      _c("button", { staticClass: "btn btn-danger" }, [
+                        _vm._v("Удалить")
+                      ])
+                    ],
+                    1
+                  )
+                ])
+              ]
+            )
+          })
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
@@ -119,11 +154,7 @@ var staticRenderFns = [
     return _c(
       "div",
       { staticClass: "col-md-12 d-flex justify-content-between" },
-      [
-        _c("h1", [_vm._v("Ячейки шкафа")]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn" }, [_vm._v("Обновить")])
-      ]
+      [_c("h1", [_vm._v("Ячейки шкафа")])]
     )
   }
 ]

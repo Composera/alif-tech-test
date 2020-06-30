@@ -7,10 +7,10 @@
                         <router-link :to="{ name: 'create_cupboard' }" class="btn btn-primary">Поставить шкаф</router-link>
                     </div>
                     <div class="form-group mr-1">
-                        <button class="btn btn-primary">Создать ячейку</button>
+                        <router-link :to="{ name: 'create_cell' }" class="btn btn-primary">Создать ячейку</router-link>
                     </div>
                     <div class="form-group mr-1">
-                        <button class="btn btn-primary">Создать папку</button>
+                        <router-link :to="{ name: 'create_folder' }" class="btn btn-primary">Создать папку</router-link>
                     </div>
                     <div class="form-group mr-1">
                         <button class="btn btn-primary">Добавить файл</button>

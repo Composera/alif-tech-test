@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ cupboard.title }}</h5>
-                    <router-link :to="{name: 'cupbord', params: {slug: cupboard.slug}}" class="btn btn-primary">Подробнее</router-link>
+                    <router-link :to="{name: 'cupboard', params: {slug: cupboard.slug}}" class="btn btn-primary">Подробнее</router-link>
                     <button :disabled="cupboardLoading" @click="deleteCupboard(cupboard.id)" class="btn btn-danger">Удалить</button>
                 </div>
             </div>

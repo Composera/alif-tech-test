@@ -113,7 +113,10 @@ var render = function() {
                     {
                       staticClass: "btn btn-primary",
                       attrs: {
-                        to: { name: "cupbord", params: { slug: cupboard.slug } }
+                        to: {
+                          name: "cupboard",
+                          params: { slug: cupboard.slug }
+                        }
                       }
                     },
                     [_vm._v("Подробнее")]
