@@ -130,12 +130,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.errors = [];
 
-      if (this.title && this.cupboard_id) {
+      if (this.title && this.cupboard_id && this.cell_id) {
         var formData = new FormData();
         formData.append('title', this.title);
         formData.append('cupboard_id', this.cupboard_id);
+        formData.append('cell_id', this.cupboard_id);
         this.loading = true;
-        axios.post('/api/create/cell', formData).then(function (res) {
+        axios.post('/api/create/folder', formData).then(function (res) {
           _this2.$toasted.show('Успешно создано!', {
             action: {
               text: 'Закрыть',

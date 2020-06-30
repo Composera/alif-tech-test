@@ -24,3 +24,4 @@ Route::get('/get/cupboard/{slug}', 'Api\CupboardController@cupboard');
 Route::get('/get/cupboard/{id}/cells', 'Api\CupboardController@cupboardCells');
 Route::post('/delete/cupboard/{id}', 'Api\CupboardController@destroy');
 Route::post('/create/cell', 'Api\CellController@createCell');
+Route::post('/create/folder', 'Api\FolderController@createFolder');

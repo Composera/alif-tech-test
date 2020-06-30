@@ -90,14 +90,15 @@ export default {
         checkForm: function (e) {
             this.errors = [];
 
-            if (this.title && this.cupboard_id) {
+            if (this.title && this.cupboard_id && this.cell_id) {
                 let formData = new FormData;
                 formData.append('title', this.title)
                 formData.append('cupboard_id', this.cupboard_id)
+                formData.append('cell_id', this.cupboard_id)
 
                 this.loading = true
 
-                axios.post('/api/create/cell', formData)
+                axios.post('/api/create/folder', formData)
                     .then((res) => {
                         this.$toasted.show('Успешно создано!', {
                             action : {
