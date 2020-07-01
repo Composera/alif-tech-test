@@ -58,7 +58,7 @@ export default {
                 console.log(res)
             }).catch((res) => {
                 router.push({name: 'error404'})
-                console.log(res)
+                console.log(res.response)
             }).then(() => {
                 ctx.commit('updateLoading', false)
             })
