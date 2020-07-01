@@ -5,14 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Models\Cell;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Cupboard extends Model
+class Cupboard extends Model implements Searchable
 {
     use Sluggable;
 
     protected $fillable = [
         'title'
     ];
+
+    public function getSearchResult(): SearchResult
+    {
+        return new SearchResult(
+            $this,
+            $this->title
+        );
+    }
 
     /**
      * Return the sluggable configuration array for this model.

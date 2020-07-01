@@ -43,17 +43,49 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
     name: 'App',
-    data: () => ({
-        text: ''
-    }),
-    methods: {
-        checkForm(e){
-            if(this.text !== ''){
-                this.$router.push({name: 'search', params: {text: this.text}})
+    mounted(){
+        this.setText(this.text)
+        this.searchText(this.$route.params.text)
+    },
+    computed: {
+        text: {
+            get(){
+                return this.$store.state.search.text
+            },
+            set(val){
+                this.setText(val)
             }
+        }
+    },
+    methods: {
+        ...mapActions({
+            setText: 'search/setText' ,
+            searchText: 'search/searchText'
+        }),
+        checkForm(e){
+
             e.preventDefault()
+
+            if(this.text !== ''){
+                this.$router.push({name: 'search', params: {text: this.text}}).catch(() => {})
+                this.setText(this.text)
+                this.searchText(this.$route.params.text)
+                return true;
+            }
+            
+
+            this.$toasted.show('Поиск пустого текста невозможен', {
+                action : {
+                    text : 'Закрыть',
+                    onClick : (e, toastObject) => {
+                        toastObject.goAway(0);
+                    }
+                },
+            })
         }
     }
 }

@@ -5,14 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
+use App\Models\Folder;
 
-class File extends Model
+class File extends Model implements Searchable
 {
     public const FILE_URL = 'uploads/file_images/';
     
     protected $fillable = [
         'folder_id'
     ];
+
+    public function getSearchResult(): SearchResult
+    {
+        return new SearchResult(
+            $this,
+            $this->filename
+        );
+    }
 
     public function uploadFile($file)
     {
@@ -33,5 +44,10 @@ class File extends Model
             $this->file_server_name = null;
             $this->save();
         }
+    }
+
+    public function parent()
+    {
+        return $this->hasOne(Folder::class, 'id', 'folder_id');
     }
 }

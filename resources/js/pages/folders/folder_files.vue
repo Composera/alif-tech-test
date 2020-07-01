@@ -4,8 +4,16 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><router-link :to="{name:'main'}">Главная</router-link></li>
-                    <li class="breadcrumb-item"><router-link :to="{name:'cupboard', params: {slug: folder.parent.parent.slug}}">{{ folder.parent.parent.title }}</router-link></li>
-                    <li class="breadcrumb-item"><router-link :to="{name:'cell_folders', params: {cell_slug: folder.parent.slug}}">{{ folder.parent.title }}</router-link></li>
+                    <li class="breadcrumb-item" v-if="folder.parent !== undefined">
+                        <router-link :to="{name:'cupboard', params: {slug: folder.parent.parent.slug}}">
+                            {{ folder.parent.parent.title }}
+                        </router-link>
+                    </li>
+                    <li class="breadcrumb-item" v-if="folder.parent !== undefined">
+                        <router-link :to="{name:'cell_folders', params: {cell_slug: folder.parent.slug}}">
+                            {{ folder.parent.title }}
+                        </router-link>
+                    </li>
                     <li class="breadcrumb-item">{{ folder.title }}</li>
                 </ol>
             </nav>

@@ -2159,6 +2159,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2203,27 +2210,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
-  data: function data() {
-    return {
-      text: ''
-    };
+  mounted: function mounted() {
+    this.setText(this.text);
+    this.searchText(this.$route.params.text);
   },
-  methods: {
+  computed: {
+    text: {
+      get: function get() {
+        return this.$store.state.search.text;
+      },
+      set: function set(val) {
+        this.setText(val);
+      }
+    }
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    setText: 'search/setText',
+    searchText: 'search/searchText'
+  })), {}, {
     checkForm: function checkForm(e) {
+      e.preventDefault();
+
       if (this.text !== '') {
         this.$router.push({
           name: 'search',
           params: {
             text: this.text
           }
-        });
+        })["catch"](function () {});
+        this.setText(this.text);
+        this.searchText(this.$route.params.text);
+        return true;
       }
 
-      e.preventDefault();
+      this.$toasted.show('Поиск пустого текста невозможен', {
+        action: {
+          text: 'Закрыть',
+          onClick: function onClick(e, toastObject) {
+            toastObject.goAway(0);
+          }
+        }
+      });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -56126,19 +56158,19 @@ var map = {
 	],
 	"./folders/folder_files": [
 		"./resources/js/pages/folders/folder_files.vue",
-		8
+		7
 	],
 	"./folders/folder_files.vue": [
 		"./resources/js/pages/folders/folder_files.vue",
-		8
+		7
 	],
 	"./main": [
 		"./resources/js/pages/main.vue",
-		7
+		8
 	],
 	"./main.vue": [
 		"./resources/js/pages/main.vue",
-		7
+		8
 	],
 	"./search": [
 		"./resources/js/pages/search.vue",
@@ -56320,6 +56352,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_categories__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/categories */ "./resources/js/store/modules/categories.js");
 /* harmony import */ var _modules_cupboards__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/cupboards */ "./resources/js/store/modules/cupboards.js");
+/* harmony import */ var _modules_search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/search */ "./resources/js/store/modules/search.js");
+
 
 
 
@@ -56328,7 +56362,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     categories: _modules_categories__WEBPACK_IMPORTED_MODULE_2__["default"],
-    cupboards: _modules_cupboards__WEBPACK_IMPORTED_MODULE_3__["default"]
+    cupboards: _modules_cupboards__WEBPACK_IMPORTED_MODULE_3__["default"],
+    search: _modules_search__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   strict: "development" !== 'production'
 });
@@ -56680,6 +56715,92 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
     },
     getCell: function getCell(state) {
       return state.cell;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/search.js":
+/*!**********************************************!*\
+  !*** ./resources/js/store/modules/search.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: function state() {
+    return {
+      text: '',
+      search: []
+    };
+  },
+  mutations: {
+    updateText: function updateText(state, val) {
+      state.text = val;
+    },
+    updateSearch: function updateSearch(state, val) {
+      state.search = val;
+    }
+  },
+  actions: {
+    setText: function setText(ctx, val) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                ctx.commit('updateText', val);
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    searchText: function searchText(ctx, text) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                ctx.commit('updateSearch', []);
+                _context2.next = 3;
+                return axios.get('/api/search/' + text).then(function (res) {
+                  ctx.commit('updateSearch', res.data.search);
+                  console.log(res);
+                })["catch"](function (res) {
+                  console.log(res.response);
+                }).then(function () {});
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  },
+  getters: {
+    getText: function getText(state) {
+      return state.text;
+    },
+    getSearch: function getSearch(state) {
+      return state.search;
     }
   }
 });

@@ -9,18 +9,36 @@
             </nav>
         </div>
         <div class="col-md-12 d-flex justify-content-between">
-            <h1>Шкафы</h1>
-            <button :disabled="cupboardLoading" @click="setCupboards" class="btn">Обновить</button>
+            <h1>Поиск</h1>
         </div>
-        <div class="col-md-4 mb-3" v-for="(cupboard, index) in cupboards" :key="cupboard.title + index">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ cupboard.title }}</h5>
-                    <router-link :to="{name: 'cupboard', params: {slug: cupboard.slug}}" class="btn btn-primary">Подробнее</router-link>
-                    <button :disabled="cupboardLoading" @click="deleteCupboard(cupboard.id)" class="btn btn-danger">Удалить</button>
+        <template v-for="(item, name, index) in search">
+            <div class="col-md-12" :key="name + index">
+                <h1 v-if="name === 'cupboards'">Шкафы</h1>
+                <h1 v-if="name === 'files'">Файлы</h1>
+                <h1 v-if="name === 'cells'">Ячейки</h1>
+                <h1 v-if="name === 'folders'">Папки</h1>
+            </div>
+            <div class="col-md-4 mb-3" v-for="(searched_item) in item" :key="searched_item.title + index">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ searched_item.title }}</h5>
+                        <router-link v-if="name === 'cupboards'" :to="{name: 'cupboard', params: {slug: searched_item.searchable.slug ? searched_item.searchable.slug : 'test'}}" class="btn btn-primary">Подробнее</router-link>
+                        <router-link v-if="name === 'files'" :to="{name: 'folder_files', params: {
+                            folder_slug: searched_item.searchable.parent.slug ? searched_item.searchable.parent.slug : 'test'
+                            }
+                        }" class="btn btn-primary">Подробнее</router-link>
+                        <router-link v-if="name === 'cells'" :to="{name: 'cell_folders', params: {
+                                cell_slug: searched_item.searchable.slug ? searched_item.searchable.slug : 'test'
+                            }
+                        }" class="btn btn-primary">Подробнее</router-link>
+                        <router-link v-if="name === 'folders'" :to="{name: 'folder_files', params: {
+                                folder_slug: searched_item.searchable.slug ? searched_item.searchable.slug : 'test'
+                            }
+                        }" class="btn btn-primary">Подробнее</router-link>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
 </template>
 
@@ -30,18 +48,19 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'MainPage',
     mounted(){
-        this.setCupboards()
+        if(this.$route.params.text !== undefined)
+            this.searchText(this.$route.params.text)
     },
+    data: () => ({
+    }),
     computed: {
         ...mapGetters({
-            cupboards: 'cupboards/mainCupboards',
-            cupboardLoading: 'cupboards/cupboardLoading'
+            search: 'search/getSearch'
         })
     },
     methods: {
         ...mapActions({
-            setCupboards: 'cupboards/setCupboards',
-            deleteCupboard: 'cupboards/deleteCupboard'
+            searchText: 'search/searchText'
         })
     }
 }

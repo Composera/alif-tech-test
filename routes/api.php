@@ -31,4 +31,4 @@ Route::post('/create/folder', 'Api\FolderController@createFolder');
 Route::get('/get/cell/{slug}/folders', 'Api\FolderController@cellFolders');
 Route::post('/upload/file', 'Api\FolderController@uploadFile');
 Route::get('/delete/{id}/file', 'Api\FolderController@deleteFile');
-Route::get('/search/{text}', 'Api\FolderController@deleteFile');
+Route::get('/search/{text}', 'Api\SearchController@search');
