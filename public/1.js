@@ -157,7 +157,12 @@ var render = function() {
                         "router-link",
                         {
                           staticClass: "btn btn-primary",
-                          attrs: { to: { name: "main" } }
+                          attrs: {
+                            to: {
+                              name: "folder_files",
+                              params: { folder_slug: folder.slug }
+                            }
+                          }
                         },
                         [_vm._v("Подробнее")]
                       ),

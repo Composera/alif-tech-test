@@ -109,15 +109,15 @@ export default {
                             },
                         })
 
-                        let cupboard = {}
+                        let cell = {}
 
-                        this.cupboards.forEach(element => {
-                            if(element.id === this.cupboard_id){
-                                cupboard = element
+                        this.cells.forEach(element => {
+                            if(element.id === this.cell_id){
+                                cell = element
                             }
                         });
 
-                        this.$router.push({name:'main'})
+                        this.$router.push({name:'cell_folders', params: {cell_slug: cell.slug}})
 
                         // console.log(res)
                     }).catch((res) => {

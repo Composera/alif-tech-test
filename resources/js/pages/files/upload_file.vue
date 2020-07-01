@@ -85,13 +85,18 @@ export default {
 
             if (this.file && this.folder_id) {
                 let formData = new FormData;
-                formData.append('title', this.title)
+                formData.append('file', this.file)
+                formData.append('folder_id', this.folder_id)
 
                 this.loading = true
 
-                axios.post('/api/create/cupboard', formData)
+                axios.post('/api/upload/file', formData, {
+                    headers: {
+                    'Content-Type': 'multipart/form-data'
+                    }
+                })
                     .then((res) => {
-                        this.$toasted.show('Успешно создано!', {
+                        this.$toasted.show('Успешно загружено!', {
                             action : {
                                 text : 'Закрыть',
                                 onClick : (e, toastObject) => {
@@ -100,9 +105,17 @@ export default {
                             },
                         })
 
-                        this.$router.push({name:'main'})
+                        let folder = {}
 
-                        // console.log(res)
+                        this.folders.forEach(element => {
+                            if(element.id === this.folder_id){
+                                folder = element
+                            }
+                        });
+
+                        this.$router.push({name:'folder_files', params: {folder_slug: folder.slug}})
+
+                        console.log(res)
                     }).catch((res) => {
                         if(res.response.data.errors !== undefined){
                             this.errors = res.response.data.errors

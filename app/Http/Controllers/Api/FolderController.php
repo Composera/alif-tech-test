@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Folder;
 use App\Models\Cell;
+use App\Models\File;
 
 class FolderController extends Controller
 {
@@ -39,5 +40,32 @@ class FolderController extends Controller
     {
         $folder = Folder::findOrFail($id);
         $folder->delete();
+    }
+
+    public function uploadFile(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|max:20480',
+            'folder_id' => 'required'
+        ]);
+
+        $file = File::create($request->except('file'));
+        $file->uploadFile($request->file('file'));
+    }
+
+    public function folderFiles($slug)
+    {
+        $folder = Folder::where('slug', 'like', '%' . $slug . '%')->with(['files', 'parent'])->firstOrFail();
+
+        return response()->json([
+            'folder' => $folder
+        ]);
+    }
+
+    public function deleteFile($id)
+    {
+        $file = File::findOrFail($id);
+        $file->removeFile();
+        $file->delete();
     }
 }

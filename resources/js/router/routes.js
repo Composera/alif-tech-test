@@ -22,9 +22,14 @@ function page (path) {
       component: page('cupboards/cupboard_cells.vue')
     },
     {
-      path: '/cupboard/:slug/cell/:cell_slug',
+      path: '/cell/:cell_slug',
       name: 'cell_folders',
       component: page('cupboards/cell_folders.vue')
+    },
+    {
+      path: '/folder/:folder_slug',
+      name: 'folder_files',
+      component: page('folders/folder_files.vue')
     },
     {
       path: '/create-cell',
@@ -40,6 +45,11 @@ function page (path) {
       path: '/upload-file',
       name: 'upload_file',
       component: page('files/upload_file.vue')
+    },
+    {
+      path: '/search/:text',
+      name: 'search',
+      component: page('search.vue')
     },
 
     { path: '*', component: page('errors/404.vue'), name: 'error404' }

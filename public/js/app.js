@@ -2200,8 +2200,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'App'
+  name: 'App',
+  data: function data() {
+    return {
+      text: ''
+    };
+  },
+  methods: {
+    checkForm: function checkForm(e) {
+      if (this.text !== '') {
+        this.$router.push({
+          name: 'search',
+          params: {
+            text: this.text
+          }
+        });
+      }
+
+      e.preventDefault();
+    }
+  }
 });
 
 /***/ }),
@@ -39315,7 +39337,43 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(0)
+        _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+          _c("form", { on: { submit: _vm.checkForm } }, [
+            _c("div", { staticClass: "form-group row" }, [
+              _c("div", { staticClass: "col-md-10" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.text,
+                      expression: "text"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    name: "search",
+                    id: "search",
+                    placeholder: "Поиск по папкам и файлам",
+                    autocomplete: "off"
+                  },
+                  domProps: { value: _vm.text },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.text = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ])
+        ])
       ]),
       _vm._v(" "),
       _vm._t("default")
@@ -39328,25 +39386,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12 col-lg-6" }, [
-      _c("div", { staticClass: "form-group row" }, [
-        _c("div", { staticClass: "col-md-10" }, [
-          _c("input", {
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              name: "search",
-              id: "search",
-              placeholder: "Поиск по папкам и файлам",
-              autocomplete: "off"
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-2" }, [
-          _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Поиск")])
-        ])
-      ])
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Поиск")])
     ])
   }
 ]
@@ -56083,6 +56124,14 @@ var map = {
 		"./resources/js/pages/folders/create_folder.vue",
 		6
 	],
+	"./folders/folder_files": [
+		"./resources/js/pages/folders/folder_files.vue",
+		8
+	],
+	"./folders/folder_files.vue": [
+		"./resources/js/pages/folders/folder_files.vue",
+		8
+	],
 	"./main": [
 		"./resources/js/pages/main.vue",
 		7
@@ -56090,6 +56139,14 @@ var map = {
 	"./main.vue": [
 		"./resources/js/pages/main.vue",
 		7
+	],
+	"./search": [
+		"./resources/js/pages/search.vue",
+		9
+	],
+	"./search.vue": [
+		"./resources/js/pages/search.vue",
+		9
 	]
 };
 function webpackAsyncContext(req) {
@@ -56218,9 +56275,13 @@ function page(path) {
   name: 'cupboard',
   component: page('cupboards/cupboard_cells.vue')
 }, {
-  path: '/cupboard/:slug/cell/:cell_slug',
+  path: '/cell/:cell_slug',
   name: 'cell_folders',
   component: page('cupboards/cell_folders.vue')
+}, {
+  path: '/folder/:folder_slug',
+  name: 'folder_files',
+  component: page('folders/folder_files.vue')
 }, {
   path: '/create-cell',
   name: 'create_cell',
@@ -56233,6 +56294,10 @@ function page(path) {
   path: '/upload-file',
   name: 'upload_file',
   component: page('files/upload_file.vue')
+}, {
+  path: '/search/:text',
+  name: 'search',
+  component: page('search.vue')
 }, {
   path: '*',
   component: page('errors/404.vue'),
@@ -56582,10 +56647,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
                         toastObject.goAway(0);
                       }
                     }
-                  });
-                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
-                    name: 'main'
-                  });
+                  }); // router.push({name: 'main'})
+
                   console.log(res);
                 })["catch"](function (res) {
                   _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({

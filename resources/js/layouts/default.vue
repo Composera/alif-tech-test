@@ -18,21 +18,24 @@
                 </div>
             </div>
             <div class="col-md-12 col-lg-6">
-                <div class="form-group row">
-                    <div class="col-md-10">
-                        <input 
-                            type="text" 
-                            name="search" 
-                            id="search" 
-                            class="form-control" 
-                            placeholder="Поиск по папкам и файлам"
-                            autocomplete="off"
-                        >
+                <form @submit="checkForm">
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <input 
+                                type="text" 
+                                name="search" 
+                                v-model="text"
+                                id="search" 
+                                class="form-control" 
+                                placeholder="Поиск по папкам и файлам"
+                                autocomplete="off"
+                            >
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary">Поиск</button>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary">Поиск</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
         <slot />
@@ -41,6 +44,17 @@
 
 <script>
 export default {
-    name: 'App'
+    name: 'App',
+    data: () => ({
+        text: ''
+    }),
+    methods: {
+        checkForm(e){
+            if(this.text !== ''){
+                this.$router.push({name: 'search', params: {text: this.text}})
+            }
+            e.preventDefault()
+        }
+    }
 }
 </script>

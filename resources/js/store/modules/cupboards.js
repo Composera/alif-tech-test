@@ -139,7 +139,7 @@ export default {
                         },
                     });
 
-                    router.push({name: 'main'})
+                    // router.push({name: 'main'})
                     console.log(res)
                 }).catch((res) => {
                     router.push({name: 'error404'})

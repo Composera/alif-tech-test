@@ -146,16 +146,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
           });
 
-          var cupboard = {};
+          var cell = {};
 
-          _this2.cupboards.forEach(function (element) {
-            if (element.id === _this2.cupboard_id) {
-              cupboard = element;
+          _this2.cells.forEach(function (element) {
+            if (element.id === _this2.cell_id) {
+              cell = element;
             }
           });
 
           _this2.$router.push({
-            name: 'main'
+            name: 'cell_folders',
+            params: {
+              cell_slug: cell.slug
+            }
           }); // console.log(res)
 
         })["catch"](function (res) {

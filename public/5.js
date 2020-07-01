@@ -111,10 +111,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.file && this.folder_id) {
         var formData = new FormData();
-        formData.append('title', this.title);
+        formData.append('file', this.file);
+        formData.append('folder_id', this.folder_id);
         this.loading = true;
-        axios.post('/api/create/cupboard', formData).then(function (res) {
-          _this.$toasted.show('Успешно создано!', {
+        axios.post('/api/upload/file', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (res) {
+          _this.$toasted.show('Успешно загружено!', {
             action: {
               text: 'Закрыть',
               onClick: function onClick(e, toastObject) {
@@ -123,10 +128,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
           });
 
-          _this.$router.push({
-            name: 'main'
-          }); // console.log(res)
+          var folder = {};
 
+          _this.folders.forEach(function (element) {
+            if (element.id === _this.folder_id) {
+              folder = element;
+            }
+          });
+
+          _this.$router.push({
+            name: 'folder_files',
+            params: {
+              folder_slug: folder.slug
+            }
+          });
+
+          console.log(res);
         })["catch"](function (res) {
           if (res.response.data.errors !== undefined) {
             _this.errors = res.response.data.errors;

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use App\Models\File;
+use App\Models\Cell;
 
 class Folder extends Model
 {
@@ -25,5 +27,15 @@ class Folder extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function parent()
+    {
+        return $this->hasOne(Cell::class, 'id', 'cell_id')->with('parent');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class, 'folder_id', 'id');
     }
 }

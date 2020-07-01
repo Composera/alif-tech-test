@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ folder.title }}</h5>
-                        <router-link :to="{name: 'main'}" class="btn btn-primary">Подробнее</router-link>
+                        <router-link :to="{name: 'folder_files', params: {folder_slug: folder.slug}}" class="btn btn-primary">Подробнее</router-link>
                         <button @click="deleteFolder(folder.id)" class="btn btn-danger">Удалить</button>
                     </div>
                 </div>
