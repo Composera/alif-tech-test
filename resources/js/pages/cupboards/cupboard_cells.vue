@@ -4,7 +4,6 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><router-link :to="{name:'main'}">Главная</router-link></li>
-                    <li class="breadcrumb-item">Шкаф</li>
                     <li class="breadcrumb-item" v-if="cupboard.title !== undefined">{{ cupboard.title }}</li>
                 </ol>
             </nav>
@@ -17,8 +16,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ cell.title }}</h5>
-                        <router-link :to="{name: 'main'}" class="btn btn-primary">Подробнее</router-link>
-                        <button class="btn btn-danger">Удалить</button>
+                        <router-link :to="{name: 'cell_folders', params: { slug: $route.params.slug, cell_slug: cell.slug }}" class="btn btn-primary">Подробнее</router-link>
+                        <button @click="deleteCell(cell.id, $route.params.slug)" class="btn btn-danger">Удалить</button>
                     </div>
                 </div>
             </div>
@@ -43,6 +42,7 @@ export default {
     methods: {
         ...mapActions({
             getCupboardCells: 'cupboards/getCupboardCells',
+            deleteCell: 'cupboards/deleteCupboardCell'
         })
     }
 }

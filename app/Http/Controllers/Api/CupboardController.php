@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cupboard;
+use App\Models\Cell;
 
 class CupboardController extends Controller
 {
@@ -28,7 +29,7 @@ class CupboardController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroyCupboard($id)
     {
         $cupboard = Cupboard::findOrFail($id);
         $cupboard->delete();
@@ -36,6 +37,12 @@ class CupboardController extends Controller
         return response()->json([
             'cupboards' => Cupboard::orderBy('id', 'desc')->get()
         ]);
+    }
+
+    public function destroyCell($id)
+    {
+        $cell = Cell::findOrFail($id);
+        $cell->delete();
     }
 
     public function cupboard($slug)

@@ -39248,7 +39248,7 @@ var render = function() {
     [
       _c("div", { staticClass: "row mt-3 mb-3" }, [
         _c("div", { staticClass: "col-md-12 col-lg-6" }, [
-          _c("div", { staticClass: "d-md-flex d-lg-flex d-sm-none" }, [
+          _c("div", { staticClass: "d-md-flex d-lg-flex" }, [
             _c(
               "div",
               { staticClass: "form-group mr-1" },
@@ -39297,11 +39297,25 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _c(
+              "div",
+              { staticClass: "form-group mr-1" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { to: { name: "upload_file" } }
+                  },
+                  [_vm._v("Добавить файл")]
+                )
+              ],
+              1
+            )
           ])
         ]),
         _vm._v(" "),
-        _vm._m(1)
+        _vm._m(0)
       ]),
       _vm._v(" "),
       _vm._t("default")
@@ -39310,16 +39324,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group mr-1" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _vm._v("Добавить файл")
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -56031,45 +56035,61 @@ var map = {
 		"./resources/js/pages/cells/create_cell.vue",
 		0
 	],
+	"./cupboards/cell_folders": [
+		"./resources/js/pages/cupboards/cell_folders.vue",
+		1
+	],
+	"./cupboards/cell_folders.vue": [
+		"./resources/js/pages/cupboards/cell_folders.vue",
+		1
+	],
 	"./cupboards/create_cupboard": [
 		"./resources/js/pages/cupboards/create_cupboard.vue",
-		3
+		2
 	],
 	"./cupboards/create_cupboard.vue": [
 		"./resources/js/pages/cupboards/create_cupboard.vue",
-		3
+		2
 	],
 	"./cupboards/cupboard_cells": [
 		"./resources/js/pages/cupboards/cupboard_cells.vue",
-		4
+		3
 	],
 	"./cupboards/cupboard_cells.vue": [
 		"./resources/js/pages/cupboards/cupboard_cells.vue",
-		4
+		3
 	],
 	"./errors/404": [
 		"./resources/js/pages/errors/404.vue",
-		1
+		4
 	],
 	"./errors/404.vue": [
 		"./resources/js/pages/errors/404.vue",
-		1
+		4
+	],
+	"./files/upload_file": [
+		"./resources/js/pages/files/upload_file.vue",
+		5
+	],
+	"./files/upload_file.vue": [
+		"./resources/js/pages/files/upload_file.vue",
+		5
 	],
 	"./folders/create_folder": [
 		"./resources/js/pages/folders/create_folder.vue",
-		5
+		6
 	],
 	"./folders/create_folder.vue": [
 		"./resources/js/pages/folders/create_folder.vue",
-		5
+		6
 	],
 	"./main": [
 		"./resources/js/pages/main.vue",
-		2
+		7
 	],
 	"./main.vue": [
 		"./resources/js/pages/main.vue",
-		2
+		7
 	]
 };
 function webpackAsyncContext(req) {
@@ -56198,6 +56218,10 @@ function page(path) {
   name: 'cupboard',
   component: page('cupboards/cupboard_cells.vue')
 }, {
+  path: '/cupboard/:slug/cell/:cell_slug',
+  name: 'cell_folders',
+  component: page('cupboards/cell_folders.vue')
+}, {
   path: '/create-cell',
   name: 'create_cell',
   component: page('cells/create_cell.vue')
@@ -56205,6 +56229,10 @@ function page(path) {
   path: '/create-folder',
   name: 'create_folder',
   component: page('folders/create_folder.vue')
+}, {
+  path: '/upload-file',
+  name: 'upload_file',
+  component: page('files/upload_file.vue')
 }, {
   path: '*',
   component: page('errors/404.vue'),
@@ -56336,7 +56364,12 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
     return {
       cupboards: [],
       loading: false,
-      cupboard: []
+      cupboard: [],
+      cell: {
+        parent: {
+          title: ''
+        }
+      }
     };
   },
   mutations: {
@@ -56348,17 +56381,53 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
     },
     updateCupboard: function updateCupboard(state, val) {
       state.cupboard = val;
+    },
+    updateCell: function updateCell(state, val) {
+      state.cell = val;
     }
   },
   actions: {
-    setCupboards: function setCupboards(ctx) {
+    getCellFolders: function getCellFolders(ctx, slug) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 ctx.commit('updateLoading', true);
-                _context.next = 3;
+                ctx.commit('updateCell', {
+                  parent: {
+                    title: ''
+                  }
+                });
+                _context.next = 4;
+                return axios.get('/api/get/cell/' + slug + '/folders').then(function (res) {
+                  ctx.commit('updateCell', res.data.cell);
+                  console.log(res);
+                })["catch"](function (res) {
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'error404'
+                  });
+                  console.log(res);
+                }).then(function () {
+                  ctx.commit('updateLoading', false);
+                });
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    setCupboards: function setCupboards(ctx) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                ctx.commit('updateLoading', true);
+                _context2.next = 3;
                 return axios.get('/api/get/cupboards').then(function (res) {
                   ctx.commit('updateCupboards', res.data.cupboards);
                   console.log(res);
@@ -56373,64 +56442,23 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
 
               case 3:
               case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    getCupboardCells: function getCupboardCells(ctx, slug) {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                ctx.commit('updateLoading', true);
-                ctx.commit('updateCupboard', []);
-                _context2.next = 4;
-                return axios.get('/api/get/cupboard/' + slug).then(function (res) {
-                  ctx.commit('updateCupboard', res.data.cupboard);
-                  console.log(res);
-                })["catch"](function (res) {
-                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
-                    name: 'error404'
-                  });
-                  console.log(res);
-                }).then(function () {
-                  ctx.commit('updateLoading', false);
-                });
-
-              case 4:
-              case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
     },
-    deleteCupboard: function deleteCupboard(ctx, id) {
+    getCupboardCells: function getCupboardCells(ctx, slug) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                if (!confirm('Вы уверены?')) {
-                  _context3.next = 4;
-                  break;
-                }
-
                 ctx.commit('updateLoading', true);
+                ctx.commit('updateCupboard', []);
                 _context3.next = 4;
-                return axios.post('/api/delete/cupboard/' + id).then(function (res) {
-                  vue__WEBPACK_IMPORTED_MODULE_1___default.a.toasted.show('Успешно удалено!', {
-                    action: {
-                      text: 'Закрыть',
-                      onClick: function onClick(e, toastObject) {
-                        toastObject.goAway(0);
-                      }
-                    }
-                  });
-                  ctx.commit('updateCupboards', res.data.cupboards);
+                return axios.get('/api/get/cupboard/' + slug).then(function (res) {
+                  ctx.commit('updateCupboard', res.data.cupboard);
                   console.log(res);
                 })["catch"](function (res) {
                   _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
@@ -56448,6 +56476,133 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
           }
         }, _callee3);
       }))();
+    },
+    deleteCupboard: function deleteCupboard(ctx, id) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!confirm('Вы уверены?')) {
+                  _context4.next = 4;
+                  break;
+                }
+
+                ctx.commit('updateLoading', true);
+                _context4.next = 4;
+                return axios.post('/api/delete/cupboard/' + id).then(function (res) {
+                  vue__WEBPACK_IMPORTED_MODULE_1___default.a.toasted.show('Успешно удалено!', {
+                    action: {
+                      text: 'Закрыть',
+                      onClick: function onClick(e, toastObject) {
+                        toastObject.goAway(0);
+                      }
+                    }
+                  });
+                  ctx.commit('updateCupboards', res.data.cupboards);
+                  console.log(res);
+                })["catch"](function (res) {
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'error404'
+                  });
+                  console.log(res.response);
+                }).then(function () {
+                  ctx.commit('updateLoading', false);
+                });
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    deleteFolder: function deleteFolder(ctx, id) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (!confirm('Вы уверены?')) {
+                  _context5.next = 4;
+                  break;
+                }
+
+                ctx.commit('updateLoading', true);
+                _context5.next = 4;
+                return axios.post('/api/delete/folder/' + id).then(function (res) {
+                  vue__WEBPACK_IMPORTED_MODULE_1___default.a.toasted.show('Успешно удалено!', {
+                    action: {
+                      text: 'Закрыть',
+                      onClick: function onClick(e, toastObject) {
+                        toastObject.goAway(0);
+                      }
+                    }
+                  });
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'main'
+                  });
+                  console.log(res);
+                })["catch"](function (res) {
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'error404'
+                  });
+                  console.log(res.response);
+                }).then(function () {
+                  ctx.commit('updateLoading', false);
+                });
+
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    deleteCupboardCell: function deleteCupboardCell(ctx, id, slug) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                if (!confirm('Вы уверены?')) {
+                  _context6.next = 4;
+                  break;
+                }
+
+                ctx.commit('updateLoading', true);
+                _context6.next = 4;
+                return axios.post('/api/delete/cell/' + id).then(function (res) {
+                  vue__WEBPACK_IMPORTED_MODULE_1___default.a.toasted.show('Успешно удалено!', {
+                    action: {
+                      text: 'Закрыть',
+                      onClick: function onClick(e, toastObject) {
+                        toastObject.goAway(0);
+                      }
+                    }
+                  });
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'main'
+                  });
+                  console.log(res);
+                })["catch"](function (res) {
+                  _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+                    name: 'error404'
+                  });
+                  console.log(res);
+                }).then(function () {
+                  ctx.commit('updateLoading', false);
+                });
+
+              case 4:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }))();
     }
   },
   getters: {
@@ -56459,6 +56614,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_toasted__WEBPACK_IMPORTED_MOD
     },
     getCupboard: function getCupboard(state) {
       return state.cupboard;
+    },
+    getCell: function getCell(state) {
+      return state.cell;
     }
   }
 });

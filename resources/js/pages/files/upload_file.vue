@@ -4,12 +4,12 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><router-link :to="{ name: 'main' }">Главная</router-link></li>
-                    <li class="breadcrumb-item">Создание папки</li>
+                    <li class="breadcrumb-item">Загрузка файла</li>
                 </ol>
             </nav>
         </div>
         <div class="col-md-12">
-            <card title="Создание папки">
+            <card title="Загрузка файла">
                 <ul class="list-group mb-3">
                     <li
                         class="list-group-item list-group-item-danger"
@@ -22,8 +22,8 @@
                 </ul>
                 <form @submit="checkForm">
                     <div class="form-group">
-                        <label for="title">Название</label>
-                        <input type="text" class="form-control" v-model="title">
+                        <label for="title">Файл</label>
+                        <input type="file" class="form-control" @change="changeFile">
                     </div>
                     <div class="form-group">
                         <label for="cupboard">Шкаф</label>
@@ -33,12 +33,18 @@
                     </div>
                     <div class="form-group">
                         <label for="cell">Ячейки шкафа</label>
-                        <select :disabled="cellLoading" id="cell" class="form-control" v-model="cell_id">
+                        <select @change="getCellFolders" :disabled="cellLoading" id="cell" class="form-control" v-model="cell_id">
                             <option :value="cell.id" v-for="cell in cells" :key="cell.title + cell.id">{{ cell.title }}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <button :disabled="loading" class="btn btn-primary">Создать</button>
+                        <label for="cell">Папки ячейки</label>
+                        <select :disabled="folderLoading" id="folder" class="form-control" v-model="folder_id">
+                            <option :value="folder.id" v-for="folder in folders" :key="folder.title + folder.id">{{ folder.title }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button :disabled="loading" class="btn btn-primary">Загрузить</button>
                     </div>
                 </form>
             </card>
@@ -50,15 +56,19 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-    name: 'CreateFolder',
+    name: 'UploadFile',
     data: () => ({
         title: null,
-        cupboard_id: null,
-        cell_id: null,
         errors: [],
+        file: null,
+        cell_id: null,
+        folder_id: null,
+        cupboard_id: null,
         loading: false,
+        folders: [],
+        cells: [],
         cellLoading: true,
-        cells: []
+        folderLoading: true
     }),
     mounted(){
         this.setCupboards()
@@ -70,35 +80,16 @@ export default {
         })
     },
     methods: {
-        async getCupboardCells(){
-            this.cellLoading = true
-            this.cell_id = null
-            await axios.get('/api/get/cupboard/'+ this.cupboard_id +'/cells')
-                .then((res) => {
-                    this.cells = res.data.cells;
-                    console.log(res)
-                }).catch((res) => {
-                    console.log(res)
-                })
-                .then(() => {
-                    this.cellLoading = false
-                })
-        },
-        ...mapActions({
-            setCupboards: 'cupboards/setCupboards',
-        }),
         checkForm: function (e) {
             this.errors = [];
 
-            if (this.title && this.cupboard_id && this.cell_id) {
+            if (this.file && this.folder_id) {
                 let formData = new FormData;
                 formData.append('title', this.title)
-                formData.append('cupboard_id', this.cupboard_id)
-                formData.append('cell_id', this.cell_id)
 
                 this.loading = true
 
-                axios.post('/api/create/folder', formData)
+                axios.post('/api/create/cupboard', formData)
                     .then((res) => {
                         this.$toasted.show('Успешно создано!', {
                             action : {
@@ -108,14 +99,6 @@ export default {
                                 }
                             },
                         })
-
-                        let cupboard = {}
-
-                        this.cupboards.forEach(element => {
-                            if(element.id === this.cupboard_id){
-                                cupboard = element
-                            }
-                        });
 
                         this.$router.push({name:'main'})
 
@@ -138,25 +121,63 @@ export default {
                     }).then(() => {
                         this.loading = false
                     })
-
                 e.preventDefault();
 
                 return true;
             }
 
-            if (!this.title) {
-                this.errors.push('Требуется указать название.');
+            if (!this.file) {
+                this.errors.push('Требуется выбрать файл.');
             }
 
-            if (!this.cupboard_id) {
-                this.errors.push('Требуется выбрать шкаф.');
-            }
-
-            if (!this.cell_id) {
-                this.errors.push('Требуется выбрать ячейку шкафа.');
+            if (!this.folder_id) {
+                this.errors.push('Требуется выбрать папку.');
             }
 
             e.preventDefault();
+        },
+        async getCupboardCells(){
+            this.cellLoading = true
+            this.cell_id = null
+            await axios.get('/api/get/cupboard/'+ this.cupboard_id +'/cells')
+                .then((res) => {
+                    this.cells = res.data.cells;
+                    console.log(res)
+                }).catch((res) => {
+                    console.log(res)
+                })
+                .then(() => {
+                    this.cellLoading = false
+                })
+        },
+        async getCellFolders(){
+            this.folderLoading = true
+            this.folder_id = null
+
+            let cell = {}
+            this.cells.forEach(element => {
+                if(element.id === this.cell_id){
+                    cell = element
+                }
+            })
+
+            await axios.get('/api/get/cell/'+ cell.slug +'/folders')
+                .then((res) => {
+                    this.folders = res.data.cell.folders;
+                    console.log(res)
+                }).catch((res) => {
+                    console.log(res.response)
+                })
+                .then(() => {
+                    this.folderLoading = false
+                })
+        },
+        ...mapActions({
+            setCupboards: 'cupboards/setCupboards',
+        }),
+        changeFile(e)
+        {
+            this.file = e.target.files[0];
         }
     }
 }

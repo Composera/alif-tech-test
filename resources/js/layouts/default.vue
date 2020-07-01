@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row mt-3 mb-3">
             <div class="col-md-12 col-lg-6">
-                <div class="d-md-flex d-lg-flex d-sm-none">
+                <div class="d-md-flex d-lg-flex">
                     <div class="form-group mr-1">
                         <router-link :to="{ name: 'create_cupboard' }" class="btn btn-primary">Поставить шкаф</router-link>
                     </div>
@@ -13,7 +13,7 @@
                         <router-link :to="{ name: 'create_folder' }" class="btn btn-primary">Создать папку</router-link>
                     </div>
                     <div class="form-group mr-1">
-                        <button class="btn btn-primary">Добавить файл</button>
+                        <router-link :to="{ name: 'upload_file' }" class="btn btn-primary">Добавить файл</router-link>
                     </div>
                 </div>
             </div>

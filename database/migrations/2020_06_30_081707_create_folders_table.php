@@ -16,10 +16,13 @@ class CreateFoldersTable extends Migration
         Schema::create('folders', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('cell_id')->nullable();
             $table->string('slug')->nullable();
+            
+            $table->unsignedBigInteger('cell_id');
+            $table->foreign('cell_id')->references('id')->on('cells')->onDelete('cascade');
+
             $table->timestamps();
-''        });
+        });
     }
 
     /**

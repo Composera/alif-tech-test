@@ -10,7 +10,12 @@ export default {
     state: () => ({
         cupboards: [],
         loading: false,
-        cupboard: []
+        cupboard: [],
+        cell: {
+            parent: {
+                title: ''
+            }
+        }
     }),
     mutations: {
         updateCupboards(state, val){
@@ -21,9 +26,30 @@ export default {
         },
         updateCupboard(state, val){
             state.cupboard = val
+        },
+        updateCell(state, val){
+            state.cell = val
         }
     },
     actions: {
+        async getCellFolders(ctx, slug){
+            ctx.commit('updateLoading', true)
+            ctx.commit('updateCell', {
+                parent: {
+                    title: ''
+                }
+            })
+            await axios.get('/api/get/cell/' + slug + '/folders')
+            .then((res) => {
+                ctx.commit('updateCell', res.data.cell)
+                console.log(res)
+            }).catch((res) => {
+                router.push({name: 'error404'})
+                console.log(res)
+            }).then(() => {
+                ctx.commit('updateLoading', false)
+            })
+        },
         async setCupboards(ctx){
             ctx.commit('updateLoading', true)
             await axios.get('/api/get/cupboards')
@@ -69,6 +95,54 @@ export default {
                     console.log(res)
                 }).catch((res) => {
                     router.push({name: 'error404'})
+                     console.log(res.response)
+                }).then(() => {
+                    ctx.commit('updateLoading', false)
+                })
+            }
+        },
+        async deleteFolder(ctx, id){
+            if(confirm('Вы уверены?')){
+                ctx.commit('updateLoading', true)
+                await axios.post('/api/delete/folder/' + id)
+                .then((res) => {
+                    Vue.toasted.show('Успешно удалено!', {
+                        action : {
+                            text : 'Закрыть',
+                            onClick : (e, toastObject) => {
+                                toastObject.goAway(0);
+                            }
+                        },
+                    });
+
+                    router.push({name: 'main'})
+                    console.log(res)
+                }).catch((res) => {
+                    router.push({name: 'error404'})
+                     console.log(res.response)
+                }).then(() => {
+                    ctx.commit('updateLoading', false)
+                })
+            }
+        },
+        async deleteCupboardCell(ctx, id, slug){
+            if(confirm('Вы уверены?')){
+                ctx.commit('updateLoading', true)
+                await axios.post('/api/delete/cell/' + id)
+                .then((res) => {
+                    Vue.toasted.show('Успешно удалено!', {
+                        action : {
+                            text : 'Закрыть',
+                            onClick : (e, toastObject) => {
+                                toastObject.goAway(0);
+                            }
+                        },
+                    });
+
+                    router.push({name: 'main'})
+                    console.log(res)
+                }).catch((res) => {
+                    router.push({name: 'error404'})
                      console.log(res)
                 }).then(() => {
                     ctx.commit('updateLoading', false)
@@ -87,6 +161,9 @@ export default {
         },
         getCupboard(state){
             return state.cupboard
+        },
+        getCell(state){
+            return state.cell
         }
     }
 }
