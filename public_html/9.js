@@ -60,6 +60,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MainPage',
@@ -236,7 +241,9 @@ var render = function() {
             )
           })
         ]
-      })
+      }),
+      _vm._v(" "),
+      _vm.search.length === 0 ? [_vm._m(1)] : _vm._e()
     ],
     2
   )
@@ -249,8 +256,16 @@ var staticRenderFns = [
     return _c(
       "div",
       { staticClass: "col-md-12 d-flex justify-content-between" },
-      [_c("h1", [_vm._v("Поиск")])]
+      [_c("h1", [_vm._v("Поиск:")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("h1", [_vm._v("Пусто")])
+    ])
   }
 ]
 render._withStripped = true

@@ -9,7 +9,7 @@
             </nav>
         </div>
         <div class="col-md-12 d-flex justify-content-between">
-            <h1>Поиск</h1>
+            <h1>Поиск:</h1>
         </div>
         <template v-for="(item, name, index) in search">
             <div class="col-md-12" :key="name + index">
@@ -37,6 +37,11 @@
                         }" class="btn btn-primary">Подробнее</router-link>
                     </div>
                 </div>
+            </div>
+        </template>
+        <template v-if="search.length === 0">
+            <div class="col-md-12">
+                <h1>Пусто</h1>
             </div>
         </template>
     </div>
